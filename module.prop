@@ -1,0 +1,6 @@
+id=user_to_system_converter
+name=systemizer
+version=1.0.0
+versionCode=1
+author=ab
+description=Convert user apps to system apps using magic mount. Features a clean UI for easy management.
