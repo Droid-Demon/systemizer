@@ -10,9 +10,11 @@ done
 # Additional wait for system stability
 sleep 5
 
-# Create API handler script
+# Create API handler script in cgi-bin
 create_api_handler() {
-    cat > $MODDIR/webroot/api.sh << 'APIEOF'
+    mkdir -p $MODDIR/webroot/cgi-bin
+    
+    cat > $MODDIR/webroot/cgi-bin/api.sh << 'APIEOF'
 #!/system/bin/sh
 
 MODDIR="/data/adb/modules/user_to_system_converter"
@@ -135,7 +137,7 @@ case "$ACTION" in
 esac
 APIEOF
 
-    chmod 755 $MODDIR/webroot/api.sh
+    chmod 755 $MODDIR/webroot/cgi-bin/api.sh
 }
 
 # Start WebUI server
