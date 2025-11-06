@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User to System App Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">App Converter</h1>
+                <p class="subtitle">Convert user apps to system apps</p>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📱</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="userAppsCount">0</div>
+                    <div class="stat-label">User Apps</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚙️</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="convertedAppsCount">0</div>
+                    <div class="stat-label">Converted</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search apps...">
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="user">User Apps</button>
+            <button class="tab-button" data-tab="converted">Converted Apps</button>
+        </div>
+
+        <!-- User Apps List -->
+        <div class="tab-content active" id="userAppsTab">
+            <div class="action-bar">
+                <button class="btn-secondary" id="selectAllUser">Select All</button>
+                <button class="btn-primary" id="convertSelected">Convert Selected</button>
+            </div>
+            <div class="app-list" id="userAppsList">
+                <div class="loading">Loading apps...</div>
+            </div>
+        </div>
+
+        <!-- Converted Apps List -->
+        <div class="tab-content" id="convertedAppsTab">
+            <div class="action-bar">
+                <button class="btn-secondary" id="selectAllConverted">Select All</button>
+                <button class="btn-danger" id="restoreSelected">Restore Selected</button>
+            </div>
+            <div class="app-list" id="convertedAppsList">
+                <div class="loading">Loading apps...</div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">
+            <span id="toastMessage"></span>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
