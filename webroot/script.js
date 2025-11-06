@@ -29,12 +29,10 @@ function initializeTabs() {
 function switchTab(tab) {
     state.currentTab = tab;
     
-    // Update tab buttons
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
     });
     
-    // Update tab content
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
     });
@@ -113,23 +111,28 @@ async function loadApps() {
     }
 }
 
-// Load user apps using CGI endpoint
+// Load user apps using API
 async function loadUserApps() {
     try {
-        const response = await fetch('/cgi-bin/list_user_apps.sh');
-        const apps = await response.json();
+        const response = await fetch('/api.sh?action=list_user');
+        const text = await response.text();
+        console.log('User apps response:', text);
+        const apps = JSON.parse(text);
         state.userApps = apps.sort((a, b) => a.label.localeCompare(b.label));
     } catch (error) {
         console.error('Error loading user apps:', error);
         state.userApps = [];
+        showToast('Failed to load user apps');
     }
 }
 
-// Load converted apps from CGI endpoint
+// Load converted apps using API
 async function loadConvertedApps() {
     try {
-        const response = await fetch('/cgi-bin/list_converted_apps.sh');
-        state.convertedApps = await response.json();
+        const response = await fetch('/api.sh?action=list_converted');
+        const text = await response.text();
+        console.log('Converted apps response:', text);
+        state.convertedApps = JSON.parse(text);
     } catch (error) {
         console.error('Error loading converted apps:', error);
         state.convertedApps = [];
@@ -161,7 +164,6 @@ function renderUserApps() {
         </div>
     `).join('');
     
-    // Add click listeners
     container.querySelectorAll('.app-item').forEach(item => {
         item.addEventListener('click', () => {
             const pkg = item.getAttribute('data-package');
@@ -195,7 +197,6 @@ function renderConvertedApps() {
         </div>
     `).join('');
     
-    // Add click listeners
     container.querySelectorAll('.app-item').forEach(item => {
         item.addEventListener('click', () => {
             const pkg = item.getAttribute('data-package');
@@ -250,20 +251,14 @@ async function convertSelectedApps() {
     
     for (const packageName of state.selectedUserApps) {
         try {
-            const response = await fetch('/cgi-bin/convert_app.sh', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'package=' + encodeURIComponent(packageName)
-            });
-            
+            const response = await fetch('/api.sh?action=convert&package=' + encodeURIComponent(packageName));
             const result = await response.json();
             
             if (result.success) {
                 successCount++;
             } else {
                 errorCount++;
+                console.error('Failed:', packageName, result.message);
             }
         } catch (error) {
             errorCount++;
@@ -297,20 +292,14 @@ async function restoreSelectedApps() {
     
     for (const packageName of state.selectedConvertedApps) {
         try {
-            const response = await fetch('/cgi-bin/restore_app.sh', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'package=' + encodeURIComponent(packageName)
-            });
-            
+            const response = await fetch('/api.sh?action=restore&package=' + encodeURIComponent(packageName));
             const result = await response.json();
             
             if (result.success) {
                 successCount++;
             } else {
                 errorCount++;
+                console.error('Failed:', packageName, result.message);
             }
         } catch (error) {
             errorCount++;
