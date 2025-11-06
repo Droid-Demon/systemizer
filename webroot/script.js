@@ -114,7 +114,7 @@ async function loadApps() {
 // Load user apps using API
 async function loadUserApps() {
     try {
-        const response = await fetch('/api.sh?action=list_user');
+        const response = await fetch('/cgi-bin/api.sh?action=list_user');
         const text = await response.text();
         console.log('User apps response:', text);
         const apps = JSON.parse(text);
@@ -129,7 +129,7 @@ async function loadUserApps() {
 // Load converted apps using API
 async function loadConvertedApps() {
     try {
-        const response = await fetch('/api.sh?action=list_converted');
+        const response = await fetch('/cgi-bin/api.sh?action=list_converted');
         const text = await response.text();
         console.log('Converted apps response:', text);
         state.convertedApps = JSON.parse(text);
@@ -251,7 +251,7 @@ async function convertSelectedApps() {
     
     for (const packageName of state.selectedUserApps) {
         try {
-            const response = await fetch('/api.sh?action=convert&package=' + encodeURIComponent(packageName));
+            const response = await fetch('/cgi-bin/api.sh?action=convert&package=' + encodeURIComponent(packageName));
             const result = await response.json();
             
             if (result.success) {
@@ -292,7 +292,7 @@ async function restoreSelectedApps() {
     
     for (const packageName of state.selectedConvertedApps) {
         try {
-            const response = await fetch('/api.sh?action=restore&package=' + encodeURIComponent(packageName));
+            const response = await fetch('/cgi-bin/api.sh?action=restore&package=' + encodeURIComponent(packageName));
             const result = await response.json();
             
             if (result.success) {
